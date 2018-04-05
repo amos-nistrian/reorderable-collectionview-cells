@@ -56,19 +56,30 @@ class ViewController: UIViewController {
         
         var gesturesArray = [UIGestureRecognizer]()
         
-        let longPress: UILongPressGestureRecognizer = {
-            let gesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
-            gesture.minimumPressDuration = 1.5;
-            return gesture
+        let swipeLeft: UISwipeGestureRecognizer = {
+            let swipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe))
+            swipe.direction = .left
+            return swipe
         }()
         
+        let longPress: UILongPressGestureRecognizer = {
+            let gesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+            gesture.minimumPressDuration = 0.5
+            return gesture
+        }()
+
         gesturesArray.append(longPress)
+        gesturesArray.append(swipeLeft)
         
         return gesturesArray
     }
     
+    @objc func handleSwipe(_ gesture: UISwipeGestureRecognizer) {
+        print("Swipe detected in cell")
+    }
+    
     @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
-        
+        print("Longpress detected in cell")
         switch(gesture.state) {
             
         case UIGestureRecognizerState.began:
@@ -89,10 +100,10 @@ class ViewController: UIViewController {
         
         // setting layout of collectionView
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 10) // cells spacing from collectionView edges
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0) // cells spacing from collectionView edges
         
-        let width = view.frame.width / 5
-        layout.itemSize = CGSize(width: width, height: width) // size of each cell
+        let width = 150//view.frame.width
+        layout.itemSize = CGSize(width: width, height: 50) // size of each cell
         
         let collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         
